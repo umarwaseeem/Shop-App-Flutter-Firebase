@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart.dart';
 import 'package:shop_app/providers/products_provider.dart';
+import 'package:shop_app/screens/cart_screen.dart';
 import 'package:shop_app/screens/home_page.dart';
 import 'package:shop_app/screens/product_detail.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => Products()),
-        ChangeNotifierProvider(create:  (context) => Cart()),
+        ChangeNotifierProvider(create: (context) => Cart()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         home: const HomePage(),
         routes: {
           ProductDetail.routeName: (context) => const ProductDetail(),
+          CartScreen.routeName: (context) => const CartScreen(),
         },
       ),
     );
@@ -33,8 +35,8 @@ class MyApp extends StatelessWidget {
 
   ThemeData themeForApp() {
     return ThemeData(
-      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red)
-          .copyWith(secondary: Colors.orange),
+      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.orange)
+          .copyWith(secondary: Colors.red),
       fontFamily: "Lato",
     );
   }

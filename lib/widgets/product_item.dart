@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import 'package:provider/provider.dart';
 import 'package:shop_app/screens/product_detail.dart';
 
+import '../providers/cart.dart';
 import '../providers/product.dart';
 
 class ProductItem extends StatelessWidget {
@@ -13,6 +14,12 @@ class ProductItem extends StatelessWidget {
       context,
       listen: false,
     ); // whole build will run when something changes, consumer way when some sub part runs again
+
+    final cart = Provider.of<Cart>(
+      context,
+      listen: false,
+    );
+
     return Consumer<Product>(
       builder: (BuildContext context, value, Widget? child) {
         return ClipRRect(
@@ -29,7 +36,9 @@ class ProductItem extends StatelessWidget {
                 builder: (BuildContext context, value, Widget? child) {
                   return IconButton(
                     color: Colors.red,
-                    onPressed: () {},
+                    onPressed: () {
+                      cart.addItems(product.title, product.id, product.price);
+                    },
                     icon: const Icon(Icons.shopping_cart_outlined),
                   );
                 },

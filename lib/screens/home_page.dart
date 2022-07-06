@@ -1,5 +1,9 @@
 import "package:flutter/material.dart";
+import 'package:provider/provider.dart';
+import 'package:shop_app/screens/cart_screen.dart';
 
+import '../providers/cart.dart';
+import '../widgets/badge.dart';
 import '../widgets/products_grid.dart';
 
 enum FilterOptions {
@@ -28,6 +32,19 @@ class _HomePageState extends State<HomePage> {
             itemBuilder: makePopUpMenu,
             icon: const Icon(Icons.more_vert),
           ),
+          Consumer<Cart>(
+            builder: (context, cartData, child) {
+              return Badge(
+                value: cartData.itemCount.toString(),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(CartScreen.routeName);
+                  },
+                  icon: const Icon(Icons.shopping_cart),
+                ),
+              );
+            },
+          )
         ],
       ),
       body: ProductsGrid(showOnlyFav: _showFavs),
