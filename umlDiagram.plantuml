@@ -1,0 +1,59 @@
+@startuml uml
+set namespaceSeparator ::
+
+class "shop_app::main.dart::MyApp" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "shop_app::main.dart::MyApp"
+
+class "shop_app::providers::product.dart::Product" {
+  +String id
+  +String title
+  +String description
+  +double price
+  +String imageUrl
+  +bool isFavourite
+  +void toggleFavStatus()
+}
+
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "shop_app::providers::product.dart::Product"
+
+class "shop_app::providers::products_provider.dart::Products" {
+  -List<Product> _items
+  +List<Product> items
+  +void addProduct()
+  +Product findByID()
+}
+
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "shop_app::providers::products_provider.dart::Products"
+
+class "shop_app::screens::home_page.dart::HomePage" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "shop_app::screens::home_page.dart::HomePage"
+
+class "shop_app::screens::product_detail.dart::ProductDetail" {
+  {static} +String routeName
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "shop_app::screens::product_detail.dart::ProductDetail"
+
+class "shop_app::widgets::products_grid.dart::ProductsGrid" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "shop_app::widgets::products_grid.dart::ProductsGrid"
+
+class "shop_app::widgets::product_item.dart::ProductItem" {
+  +GridTileBar giveMeGridTileBarforProduct()
+  +GestureDetector tapOnProductImageAndSeeItsDetails()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "shop_app::widgets::product_item.dart::ProductItem"
+
+
+@enduml
