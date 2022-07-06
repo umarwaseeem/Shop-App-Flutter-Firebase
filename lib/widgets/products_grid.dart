@@ -14,12 +14,15 @@ class ProductsGrid extends StatelessWidget {
     final products = showOnlyFav ? productsData.favItems : productsData.items;
 
     for (var index = 0; index < products.length; index++) {
-      // ignore: avoid_print
-      print(products[index].title);
+      showOnlyFav
+          // ignore: avoid_print
+          ? print("fav items ${products[index].title} ")
+          // ignore: avoid_print
+          : print("all ${products[index].title} ");
     }
 
     return GridView.builder(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(8),
       itemCount: products.length,
       itemBuilder: (context, index) => ChangeNotifierProvider.value(
         // this approach when we are wrapping it on existing object
@@ -27,7 +30,7 @@ class ProductsGrid extends StatelessWidget {
         child: const ProductItem(),
       ),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+        crossAxisCount: 1,
         childAspectRatio: 1.5,
         mainAxisSpacing: 10,
       ),

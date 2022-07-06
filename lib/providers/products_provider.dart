@@ -38,20 +38,19 @@ class Products with ChangeNotifier {
     ),
   ];
 
-  var _showFavsOnly = false;
+  // var _showFavsOnly = false;
 
   List<Product> get items {
-    if (_showFavsOnly) {
-      return _items.where((prod) => prod.isFavourite).toList();
-    } else {
-      return [..._items]; // copy of items returned, spread operator
-    }
+    // if (_showFavsOnly) {
+    //   return _items.where((prod) => prod.isFavourite).toList();
+    // } else {
+    return [..._items]; // copy of items returned, spread operator
   }
 
-  void showFavsOnly() {
-    _showFavsOnly = true;
-    notifyListeners();
-  }
+  // void showFavsOnly() {
+  //   _showFavsOnly = true;
+  //   notifyListeners();
+  // }
 
   List<Product> get favItems {
     return _items.where((prod) => prod.isFavourite).toList();
@@ -63,7 +62,7 @@ class Products with ChangeNotifier {
   // }
 
   // void addProduct(/*value*/) {
-    // _items.add(value);
+  // _items.add(value);
   //   notifyListeners();
   // }
 

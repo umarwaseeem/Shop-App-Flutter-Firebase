@@ -17,7 +17,11 @@ class ProductDetail extends StatelessWidget {
       appBar: AppBar(
         title: Text(loadedProduct.title),
       ),
-      body: null,
+      body: ListView(
+        children: [
+          Image.network(loadedProduct.imageUrl),
+        ],
+      ),
     );
   }
 }
