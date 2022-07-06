@@ -16,12 +16,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var _showFavs = false;
-
+  var title = "All Items";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Welcome"),
+        title: Text(title),
         actions: [
           PopupMenuButton(
             onSelected: displayDifferenceOnSelection,
@@ -52,8 +52,10 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       if (selectedValue == FilterOptions.favourites) {
         _showFavs = true;
+        title = "Favourites";
       } else if (selectedValue == FilterOptions.all) {
         _showFavs = false;
+        title = "All Items";
       }
     });
   }
