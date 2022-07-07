@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/screens/userproducts_screen.dart';
 
 import '../screens/cart_screen.dart';
 import '../screens/orders_screen.dart';
@@ -16,12 +17,16 @@ class MyDrawer extends StatelessWidget {
             automaticallyImplyLeading: false,
           ),
           const Divider(),
-          drawerChild(context, Icons.shop, "Shop", "/"),
+          drawerChildPushReplacementNamed(context, Icons.shop, "Shop", "/"),
           const Divider(),
-          drawerChild(
+          drawerChildPushReplacementNamed(
               context, Icons.payment, "Your Orders", OrdersScreen.routeName),
           const Divider(),
-          drawerChildCartScreen(context),
+          drawerChildPushNamed(
+              context, Icons.shopping_cart, "Your Cart", CartScreen.routeName),
+          const Divider(),
+          drawerChildPushNamed(context, Icons.edit, "User Products",
+              UserProductsScreen.routeName)
         ],
       ),
     );
@@ -29,20 +34,19 @@ class MyDrawer extends StatelessWidget {
 
 // todo //////////////////////////////////////////////////////////////
 
-  ListTile drawerChildCartScreen(BuildContext context) {
+  ListTile drawerChildPushNamed(BuildContext context, IconData? icon,
+      String title, String destinationRoute) {
     return ListTile(
-      leading: const Icon(Icons.shopping_cart),
-      title: const Text('Your Cart'),
+      leading: Icon(icon),
+      title: Text(title),
       onTap: () {
-        Navigator.pop(context);
-        Navigator.of(context).pushNamed("/");
-        Navigator.of(context).pushNamed(CartScreen.routeName);
+        Navigator.of(context).pushNamed(destinationRoute);
       },
     );
   }
 
-  ListTile drawerChild(BuildContext context, IconData? icon, String title,
-      String destinationRoute) {
+  ListTile drawerChildPushReplacementNamed(BuildContext context, IconData? icon,
+      String title, String destinationRoute) {
     return ListTile(
       leading: Icon(icon),
       title: Text(title),
