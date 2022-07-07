@@ -16,32 +16,39 @@ class MyDrawer extends StatelessWidget {
             automaticallyImplyLeading: false,
           ),
           const Divider(),
-          ListTile(
-            leading: const Icon(Icons.shop),
-            title: const Text('Shop'),
-            onTap: () {
-              Navigator.of(context).pushReplacementNamed('/');
-            },
-          ),
+          drawerChild(context, Icons.shop, "Shop", "/"),
           const Divider(),
-          ListTile(
-            leading: const Icon(Icons.payment),
-            title: const Text('Orders'),
-            onTap: () {
-              Navigator.of(context)
-                  .pushReplacementNamed(OrdersScreen.routeName);
-            },
-          ),
+          drawerChild(
+              context, Icons.payment, "Your Orders", OrdersScreen.routeName),
           const Divider(),
-          ListTile(
-            leading: const Icon(Icons.shopping_cart),
-            title: const Text('Your Cart'),
-            onTap: () {
-              Navigator.of(context).pushNamed(CartScreen.routeName);
-            },
-          ),
+          drawerChildCartScreen(context),
         ],
       ),
+    );
+  }
+
+// todo //////////////////////////////////////////////////////////////
+
+  ListTile drawerChildCartScreen(BuildContext context) {
+    return ListTile(
+      leading: const Icon(Icons.shopping_cart),
+      title: const Text('Your Cart'),
+      onTap: () {
+        Navigator.pop(context);
+        Navigator.of(context).pushNamed("/");
+        Navigator.of(context).pushNamed(CartScreen.routeName);
+      },
+    );
+  }
+
+  ListTile drawerChild(BuildContext context, IconData? icon, String title,
+      String destinationRoute) {
+    return ListTile(
+      leading: Icon(icon),
+      title: Text(title),
+      onTap: () {
+        Navigator.of(context).pushReplacementNamed(destinationRoute);
+      },
     );
   }
 }

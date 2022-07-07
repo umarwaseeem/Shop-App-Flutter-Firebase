@@ -34,22 +34,26 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.more_vert),
           ),
           Consumer<Cart>(
-            builder: (context, cartData, child) {
-              return Badge(
-                value: cartData.itemCount.toString(),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(CartScreen.routeName);
-                  },
-                  icon: const Icon(Icons.shopping_cart),
-                ),
-              );
-            },
-          )
+            builder: giveMeABadge,
+          ),
         ],
       ),
       body: ProductsGrid(showOnlyFav: _showFavs),
       drawer: const MyDrawer(),
+    );
+  }
+
+  // todo ///////////////////////////////////////
+
+  Widget giveMeABadge(context, cartData, child) {
+    return Badge(
+      value: cartData.itemCount.toString(),
+      child: IconButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed(CartScreen.routeName);
+        },
+        icon: const Icon(Icons.shopping_cart),
+      ),
     );
   }
 
