@@ -4,6 +4,7 @@ import 'package:shop_app/screens/cart_screen.dart';
 
 import '../providers/cart.dart';
 import '../widgets/badge.dart';
+import '../widgets/mydrawer.dart';
 import '../widgets/products_grid.dart';
 
 enum FilterOptions {
@@ -48,7 +49,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: ProductsGrid(showOnlyFav: _showFavs),
-      drawer: const Drawer(),
+      drawer: const MyDrawer(),
     );
   }
 
