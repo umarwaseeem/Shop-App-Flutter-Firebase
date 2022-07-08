@@ -37,7 +37,8 @@ class ProductItem extends StatelessWidget {
                   return IconButton(
                     color: Colors.red,
                     onPressed: () {
-                      cart.addItems(product.title, product.id, product.price);
+                      cart.addItems(
+                          product.title, product.id.toString(), product.price);
                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

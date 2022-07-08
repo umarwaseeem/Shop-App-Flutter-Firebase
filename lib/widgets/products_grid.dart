@@ -1,37 +1,35 @@
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/widgets/product_item.dart';
+
+// import '../providers/products.dart';
 import '../providers/products_provider.dart';
+import './product_item.dart';
 
 class ProductsGrid extends StatelessWidget {
-  final bool showOnlyFav;
+  final bool showFavs;
 
-  const ProductsGrid({Key? key, required this.showOnlyFav}) : super(key: key);
+  const ProductsGrid({super.key, required this.showFavs});
 
   @override
   Widget build(BuildContext context) {
     final productsData = Provider.of<Products>(context);
-    final products = showOnlyFav ? productsData.favItems : productsData.items;
-
-    for (var index = 0; index < products.length; index++) {
-      showOnlyFav
-          // ignore: avoid_print
-          ? print("fav items ${products[index].title} ")
-          // ignore: avoid_print
-          : print("all ${products[index].title} ");
-    }
-
+    final products = showFavs ? productsData.favoriteItems : productsData.items;
     return GridView.builder(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(10.0),
       itemCount: products.length,
-      itemBuilder: (context, index) => ChangeNotifierProvider.value(
-        // this approach when we are wrapping it on existing object
-        value: products[index],
-        child: const ProductItem(),
+      itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+        // builder: (c) => products[i],
+        value: products[i],
+        child: const ProductItem(
+            // products[i].id,
+            // products[i].title,
+            // products[i].imageUrl,
+            ),
       ),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 1,
-        childAspectRatio: 1.5,
+        crossAxisCount: 2,
+        childAspectRatio: 3 / 2,
+        crossAxisSpacing: 10,
         mainAxisSpacing: 10,
       ),
     );

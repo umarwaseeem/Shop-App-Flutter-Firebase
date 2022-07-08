@@ -30,13 +30,13 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Your One Stop Food Place',
         theme: themeForApp(),
-        home: const HomePage(),
+        home:  HomePage(),
         routes: {
           ProductDetail.routeName: (context) => const ProductDetail(),
           CartScreen.routeName: (context) => const CartScreen(),
           OrdersScreen.routeName: (context) => const OrdersScreen(),
           UserProductsScreen.routeName: (context) => const UserProductsScreen(),
-          EditProductScreen.routeName: (context) => const EditProductScreen(),
+          EditProductScreen.routeName: (context) =>  EditProductScreen(),
         },
       ),
     );

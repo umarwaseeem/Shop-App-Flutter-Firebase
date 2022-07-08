@@ -1,6 +1,9 @@
-import 'package:flutter/widgets.dart';
+import 'dart:convert';
 
-import 'product.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import './product.dart';
 
 class Products with ChangeNotifier {
   final List<Product> _items = [
@@ -37,64 +40,73 @@ class Products with ChangeNotifier {
           'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
     ),
   ];
-
-  // var _showFavsOnly = false;
+  // var _showFavoritesOnly = false;
 
   List<Product> get items {
-    // if (_showFavsOnly) {
-    //   return _items.where((prod) => prod.isFavourite).toList();
-    // } else {
-    return [..._items]; // copy of items returned, spread operator
+    // if (_showFavoritesOnly) {
+    //   return _items.where((prodItem) => prodItem.isFavorite).toList();
+    // }
+    return [..._items];
   }
 
-  // void showFavsOnly() {
-  //   _showFavsOnly = true;
-  //   notifyListeners();
-  // }
-
-  List<Product> get favItems {
-    return _items.where((prod) => prod.isFavourite).toList();
+  List<Product> get favoriteItems {
+    return _items.where((prodItem) => prodItem.isFavourite).toList();
   }
 
-  // void showAll() {
-  //   _showFavsOnly = false;
-  //   notifyListeners();
-  // }
-
-  // void addProduct(/*value*/) {
-  // _items.add(value);
-  //   notifyListeners();
-  // }
-
-  Product findByID(String id) {
+  Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-  void addProduct(Product product) {
-    final newProduct = Product(
-      imageUrl: product.imageUrl,
-      title: product.title,
-      description: product.description,
-      price: product.price,
-      id: DateTime.now().toString(),
-    );
+  // void showFavoritesOnly() {
+  //   _showFavoritesOnly = true;
+  //   notifyListeners();
+  // }
 
-    _items.add(newProduct);
+  // void showAll() {
+  //   _showFavoritesOnly = false;
+  //   notifyListeners();
+  // }
 
-    notifyListeners();
+  Future<void> addProduct(Product product) {
+    final url =
+        Uri.parse('https://flutter-update.firebaseio.com/products.json');
+    return http
+        .post(
+      url,
+      body: json.encode({
+        'title': product.title,
+        'description': product.description,
+        'imageUrl': product.imageUrl,
+        'price': product.price,
+        'isFavorite': product.isFavourite,
+      }),
+    )
+        .then((response) {
+      final newProduct = Product(
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        id: json.decode(response.body)['name'],
+      );
+      _items.add(newProduct);
+      // _items.insert(0, newProduct); // at the start of the list
+      notifyListeners();
+    });
   }
 
-  void updateProduct(String id, Product product) {
-    final index = _items.indexWhere((element) => element.id == id);
-
-    if (index >= 0) {
-      _items[index] = product;
+  void updateProduct(String id, Product newProduct) {
+    final prodIndex = _items.indexWhere((prod) => prod.id == id);
+    if (prodIndex >= 0) {
+      _items[prodIndex] = newProduct;
       notifyListeners();
+    } else {
+      print('...');
     }
   }
 
   void deleteProduct(String id) {
-    _items.removeWhere((element) => element.id == id);
+    _items.removeWhere((prod) => prod.id == id);
     notifyListeners();
   }
 }
