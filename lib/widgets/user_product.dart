@@ -9,13 +9,15 @@ class UserProductItem extends StatelessWidget {
   final String title;
   final String imageUrl;
   final String description;
+  final String price;
 
   const UserProductItem(
       {Key? key,
       required this.title,
       required this.imageUrl,
       required this.id,
-      required this.description})
+      required this.description,
+      required this.price})
       : super(key: key);
 
   @override
@@ -27,7 +29,13 @@ class UserProductItem extends StatelessWidget {
       type: MaterialType.card,
       shadowColor: Colors.grey,
       child: ListTile(
-        title: Text(title),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(title),
+            Text(price, style: const TextStyle(fontSize: 14)),
+          ],
+        ),
         subtitle: Text(description),
         leading: CircleAvatar(
           backgroundImage: NetworkImage(imageUrl),
@@ -36,6 +44,7 @@ class UserProductItem extends StatelessWidget {
           width: 100,
           child: Row(
             children: [
+              // Text(price),
               IconButton(
                 onPressed: () {
                   productsData.deleteProduct(id);
