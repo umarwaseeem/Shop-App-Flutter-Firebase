@@ -24,9 +24,9 @@ To run this project, you will need to add the following environment variables to
 
 - Flutter SDK
 - A Device Emulator `Android Studio will be needed`
-run
+- run
 `flutter upgrade` command incase to avoid an outdated SDK
-run 
+- run 
 `flutter run` command after chosing the virtual device of your choice 
 
 
