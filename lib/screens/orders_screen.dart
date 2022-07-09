@@ -15,47 +15,40 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
-  var _isLoading = false;
-
-  @override
-  void initState() {
-    Future.delayed(Duration.zero).then((value) async {
-      setState(() {
-        _isLoading = true;
-      });
-      await Provider?.of<Orders>(context, listen: false).fetchAndSetOrder();
-      setState(() {
-        _isLoading = false;
-      });
-    });
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    super.initState();
-  }
-
   Future<void> _refresh(BuildContext context) async {
     await Provider.of<Orders>(context, listen: false).fetchAndSetOrder();
   }
 
   @override
   Widget build(BuildContext context) {
-    final ordersData = Provider.of<Orders>(context);
+    // final ordersData = Provider.of<Orders>(context);
 
     return Scaffold(
       appBar: AppBar(title: const Text("Added Orders")),
       body: RefreshIndicator(
         onRefresh: () => _refresh(context),
-        child: _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : ListView.builder(
-                itemCount: ordersData.orders.length,
-                itemBuilder: (context, index) => AnOrderItem(
-                  order: ordersData.orders[index],
-                ),
-              ),
+        child: FutureBuilder(
+          future:
+              Provider.of<Orders>(context, listen: false).fetchAndSetOrder(),
+          builder: (context, dataSnapshot) {
+            if (dataSnapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (dataSnapshot.error != null) {
+              return const Center(child: Text("An error occured"));
+            } else {
+              return Consumer<Orders>(
+                builder: (context, ordersData, child) {
+                  return ListView.builder(
+                    itemCount: ordersData.orders.length,
+                    itemBuilder: (context, index) => AnOrderItem(
+                      order: ordersData.orders[index],
+                    ),
+                  );
+                },
+              );
+            }
+          },
+        ),
       ),
       drawer: const MyDrawer(),
     );
