@@ -128,9 +128,25 @@ class Products with ChangeNotifier {
     }
   }
 
-  void updateProduct(String id, Product newProduct) {
+  Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
+      final url = Uri.parse(
+          'https://shopapp-24a6a-default-rtdb.firebaseio.com/products/$id.json');
+
+      await http.patch(
+        url,
+        body: json.encode(
+          {
+            "title": newProduct.title,
+            "price": newProduct.price,
+            "description": newProduct.description,
+            // "isFavorite": newProduct.isFavourite,
+            "imageUrl": newProduct.imageUrl,
+          },
+        ),
+      );
+
       _items[prodIndex] = newProduct;
       notifyListeners();
     } else {

@@ -63,15 +63,15 @@ class EditProductScreenState extends State<EditProductScreen> {
     super.didChangeDependencies();
   }
 
-  @override
-  void dispose() {
-    _imageUrlFocusNode.removeListener(_updateImageUrl);
-    _priceFocusNode.dispose();
-    _descriptionFocusNode.dispose();
-    _imageUrlController.dispose();
-    _imageUrlFocusNode.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _imageUrlFocusNode.removeListener(_updateImageUrl);
+  //   _priceFocusNode.dispose();
+  //   _descriptionFocusNode.dispose();
+  //   _imageUrlController.dispose();
+  //   _imageUrlFocusNode.dispose();
+  //   super.dispose();
+  // }
 
   void _updateImageUrl() {
     if (!_imageUrlFocusNode.hasFocus) {
@@ -96,42 +96,44 @@ class EditProductScreenState extends State<EditProductScreen> {
       _isLoading = true;
     });
     if (_editedProduct.id != null) {
-      Provider.of<Products>(context, listen: false)
-          .updateProduct(_editedProduct.id.toString(), _editedProduct);
-      setState(() {
-        _isLoading = false;
-      });
-      Navigator.of(context).pop();
-    } else {}
-
-    try {
       await Provider.of<Products>(context, listen: false)
-          .addProduct(_editedProduct);
-    } catch (error) {
-      showDialog<void>(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text("An error occured"),
-            content: Text(error.toString()),
-            actions: [
-              TextButton.icon(
-                icon: const Icon(Icons.adb_rounded),
-                label: const Text("Okay"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        },
-      );
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-      Navigator.of(context).pop();
+          .updateProduct(_editedProduct.id.toString(), _editedProduct);
+    } else {
+      try {
+        await Provider.of<Products>(context, listen: false)
+            .addProduct(_editedProduct);
+      } catch (error) {
+        showDialog<void>(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text("An error occured"),
+              content: Text(error.toString()),
+              actions: [
+                TextButton.icon(
+                  icon: const Icon(Icons.adb_rounded),
+                  label: const Text("Okay"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            );
+          },
+        );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+        Navigator.of(context).pop();
+      }
     }
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    Navigator.of(context).pop();
   }
 
   @override
