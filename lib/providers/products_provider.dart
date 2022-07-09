@@ -80,10 +80,9 @@ class Products with ChangeNotifier {
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(Product(
           id: prodId,
-          title: prodData["title"] ,
-          price: prodData["price"] ,
+          title: prodData["title"],
+          price: prodData["price"],
           description: prodData["description"],
-          
           isFavourite: false,
           imageUrl: prodData["imageUrl"],
         ));
