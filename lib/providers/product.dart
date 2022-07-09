@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import "package:http/http.dart" as http;
+import "dart:convert";
 
 class Product with ChangeNotifier {
   final String? id;
@@ -17,8 +19,36 @@ class Product with ChangeNotifier {
     this.isFavourite = false,
   });
 
-  void toggleFavStatus() {
+  void _setFavValue(bool newValue) {
+    isFavourite = newValue;
+    notifyListeners();
+  }
+
+  Future<void> toggleFavStatus() async {
+    final oldStatus = isFavourite;
     isFavourite = !isFavourite;
     notifyListeners(); // notify that something changed and widget should rebuild
+
+    final url = Uri.parse(
+        "https://shopapp-24a6a-default-rtdb.firebaseio.com/products/$id.json");
+
+    try {
+      final response = await http.patch(
+        url,
+        body: jsonEncode(
+          {
+            "isFavorite": isFavourite,
+          },
+        ),
+      );
+
+      if (response.statusCode >= 400) {
+        _setFavValue(oldStatus);
+      }
+    } catch (error) {
+      _setFavValue(oldStatus);
+
+      rethrow;
+    }
   }
 }
