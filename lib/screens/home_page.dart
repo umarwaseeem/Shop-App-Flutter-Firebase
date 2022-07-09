@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/products_provider.dart';
 import '../widgets/mydrawer.dart';
 import '../widgets/products_grid.dart';
 import '../widgets/badge.dart';
@@ -16,11 +17,42 @@ class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  ProductsOverviewScreenState createState() => ProductsOverviewScreenState();
+  HomePageState createState() => HomePageState();
 }
 
-class ProductsOverviewScreenState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   var _showOnlyFavorites = false;
+
+  var _isInit = true;
+
+  var _isLoading = false;
+
+  // @override
+  // void initState() {
+  //   // Provider.of<Products>(context, listen: false).fetchAndSet();
+
+  //   // Future.delayed(Duration.zero).then((_) {
+  //   //   Provider.of<Products>(context).fetchAndSet();
+  //   // });
+
+  //   super.initState();
+  // }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      _isLoading = true;
+      Provider.of<Products>(context).fetchAndSet().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+
+    _isInit = false;
+
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +101,9 @@ class ProductsOverviewScreenState extends State<HomePage> {
         ],
       ),
       drawer: const MyDrawer(),
-      body: ProductsGrid(showFavs: _showOnlyFavorites),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : ProductsGrid(showFavs: _showOnlyFavorites),
     );
   }
 }
