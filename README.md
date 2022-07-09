@@ -1,16 +1,21 @@
 
-# A Shop Applcation For Mobile
+# A Shop Application For Mobile
 
 This is a basic shop/grocery/items application with Rest API features , User Authentication where FireBase is used as a backend. 
 
 
 ## Screenshots
 
-![App Drawer](images/appDrawer.jpg)
-![Home Page](images/homePage.jpg)
-![Cart Screen](images/cartScreen.jpg)
-![Edit And Add Product Screen](images/EditandAddScreen.jpg)
-![User Products Screen](images/userProducts.jpg)
+<p>
+<img src="images/appDrawer.jpg" alt="drawing" width="300" height="600"/>
+<img src="images/homePage.jpg" alt="drawing" width="300" height="600"/>
+<img src="images/cartScreen.jpg" alt="drawing" width="300" height="600"/>
+<img src="images/EditandAddScreen.jpg" alt="drawing" width="300" height="600"/>
+<img src="images/userProducts.jpg" alt="drawing" width="300" height="600"/>
+<p>
+
+
+
 
 
 ## Authors
