@@ -1,6 +1,13 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../models/http_exception.dart';
+import '../providers/auth.dart';
+import 'home_page.dart';
 
 // ignore: constant_identifier_names
 enum AuthMode { Signup, Login }
@@ -23,8 +30,8 @@ class AuthScreen extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  const Color.fromARGB(255, 67, 8, 176).withOpacity(0.5),
-                  const Color.fromARGB(255, 23, 118, 82).withOpacity(1),
+                  const Color.fromARGB(255, 104, 222, 8).withOpacity(0.5),
+                  const Color.fromARGB(255, 5, 68, 43).withOpacity(1),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -107,7 +114,23 @@ class _AuthCardState extends State<AuthCard> {
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
-  void _submit() {
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("An Error Occured"),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text("Okay"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
       // Invalid!
       return;
@@ -116,10 +139,34 @@ class _AuthCardState extends State<AuthCard> {
     setState(() {
       _isLoading = true;
     });
-    if (_authMode == AuthMode.Login) {
-      // Log user in
-    } else {
-      // Sign user up
+    try {
+      if (_authMode == AuthMode.Login) {
+        await Provider.of<Auth>(context, listen: false).login(
+            _authData["email"].toString(), _authData["password"].toString());
+      } else {
+        await Provider.of<Auth>(context, listen: false).signUp(
+            _authData["email"].toString(), _authData["password"].toString());
+      }
+
+      // Navigator.of(context).pushReplacementNamed(HomePage.routeName);
+    } on HttpException catch (error) {
+      var errorMessage = "Authentication failed";
+
+      if (error.toString().contains("EMAIL_EXISTS")) {
+        errorMessage = "This email address already exists";
+      } else if (error.toString().contains("INVALID_EMAIL")) {
+        errorMessage = "This is not a valid email address";
+      } else if (error.toString().contains("WEAK_PASS")) {
+        errorMessage = "This password is too weak ";
+      } else if (error.toString().contains("EMAIL_NOT_FOUND")) {
+        errorMessage = "Email not found";
+      } else if (error.toString().contains("INVALID_PASSWORD")) {
+        errorMessage = "Invalid Password";
+      }
+      _showErrorDialog(errorMessage);
+    } catch (error) {
+      const errorMessage = "Could not authenticate. Please ty again later";
+      _showErrorDialog(errorMessage);
     }
     setState(() {
       _isLoading = false;
@@ -162,7 +209,7 @@ class _AuthCardState extends State<AuthCard> {
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value!.isEmpty || !value.contains('@')) {
-                      return 'Invalid email!';
+                      return 'Invalid email, are you serious?!';
                     }
                     return null;
                     // return null;
@@ -176,7 +223,7 @@ class _AuthCardState extends State<AuthCard> {
                   obscureText: true,
                   controller: _passwordController,
                   validator: (value) {
-                    if (value!.isEmpty || value.length < 5) {
+                    if (value!.isEmpty || value.length < 3) {
                       return 'Password is too short!';
                     }
                     return null;
@@ -188,13 +235,13 @@ class _AuthCardState extends State<AuthCard> {
                 if (_authMode == AuthMode.Signup)
                   TextFormField(
                     enabled: _authMode == AuthMode.Signup,
-                    decoration:
-                        const InputDecoration(labelText: 'Confirm Password'),
+                    decoration: const InputDecoration(
+                        labelText: 'Confirm Your Password'),
                     obscureText: true,
                     validator: _authMode == AuthMode.Signup
                         ? (value) {
                             if (value != _passwordController.text) {
-                              return 'Passwords do not match!';
+                              return 'Passwords do not match, dont try to fool me!';
                             }
                             return null;
                           }
