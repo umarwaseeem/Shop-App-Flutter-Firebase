@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 
 import '../models/http_exception.dart';
 import '../providers/auth.dart';
-import 'home_page.dart';
 
 // ignore: constant_identifier_names
 enum AuthMode { Signup, Login }
@@ -205,7 +204,10 @@ class _AuthCardState extends State<AuthCard> {
             child: Column(
               children: <Widget>[
                 TextFormField(
-                  decoration: const InputDecoration(labelText: 'E-Mail'),
+                  decoration: const InputDecoration(
+                    labelText: 'E-Mail',
+                    border: OutlineInputBorder(),
+                  ),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value!.isEmpty || !value.contains('@')) {
@@ -218,8 +220,12 @@ class _AuthCardState extends State<AuthCard> {
                     _authData['email'] = value.toString();
                   },
                 ),
+                const SizedBox(height: 10),
                 TextFormField(
-                  decoration: const InputDecoration(labelText: 'Password'),
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
+                  ),
                   obscureText: true,
                   controller: _passwordController,
                   validator: (value) {
@@ -236,7 +242,9 @@ class _AuthCardState extends State<AuthCard> {
                   TextFormField(
                     enabled: _authMode == AuthMode.Signup,
                     decoration: const InputDecoration(
-                        labelText: 'Confirm Your Password'),
+                      labelText: 'Confirm Your Password',
+                      border: OutlineInputBorder(),
+                    ),
                     obscureText: true,
                     validator: _authMode == AuthMode.Signup
                         ? (value) {

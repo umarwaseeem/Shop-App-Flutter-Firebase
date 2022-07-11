@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import 'package:provider/provider.dart';
 import 'package:shop_app/screens/product_detail.dart';
 
+import '../providers/auth.dart';
 import '../providers/cart.dart';
 import '../providers/product.dart';
 
@@ -15,10 +16,9 @@ class ProductItem extends StatelessWidget {
       listen: false,
     ); // whole build will run when something changes, consumer way when some sub part runs again
 
-    final cart = Provider.of<Cart>(
-      context,
-      listen: false,
-    );
+    final cart = Provider.of<Cart>(context, listen: false);
+
+    final authData = Provider.of<Auth>(context, listen: false);
 
     return Consumer<Product>(
       builder: (BuildContext context, value, Widget? child) {
@@ -31,7 +31,26 @@ class ProductItem extends StatelessWidget {
                 product.title,
                 textAlign: TextAlign.center,
               ),
-              leading: togglingFavs(product),
+              leading: Consumer<Product>(
+                // only this will rerun when something changes
+                // child is something that will remain same every time for the widget wrapped in consumer
+                builder: (BuildContext context, value, _) {
+                  return IconButton(
+                    color: Colors.red,
+                    onPressed: () {
+                      product.toggleFavStatus(
+                        authData.token.toString(),
+                        authData.userId.toString(),
+                      );
+                    },
+                    icon: Icon(
+                      product.isFavourite
+                          ? Icons.favorite
+                          : Icons.favorite_border_outlined,
+                    ),
+                  );
+                },
+              ),
               trailing: Consumer<Product>(
                 builder: (BuildContext context, value, Widget? child) {
                   return IconButton(
@@ -59,26 +78,6 @@ class ProductItem extends StatelessWidget {
               ),
             ),
             child: imageToItsDetails(context, product),
-          ),
-        );
-      },
-    );
-  }
-
-  Consumer<Product> togglingFavs(Product product) {
-    return Consumer<Product>(
-      // only this will rerun when something changes
-      // child is something that will remain same every time for the widget wrapped in consumer
-      builder: (BuildContext context, value, Widget? child) {
-        return IconButton(
-          color: Colors.red,
-          onPressed: () {
-            product.toggleFavStatus();
-          },
-          icon: Icon(
-            product.isFavourite
-                ? Icons.favorite
-                : Icons.favorite_border_outlined,
           ),
         );
       },

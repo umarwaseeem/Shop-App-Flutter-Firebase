@@ -15,6 +15,10 @@ class Auth with ChangeNotifier {
     return _token != null;
   }
 
+  String? get userId {
+    return _userId;
+  }
+
   String? get token {
     if (_expiryDate != null &&
         _expiryDate!.isAfter(DateTime.now()) &&
@@ -40,6 +44,10 @@ class Auth with ChangeNotifier {
           },
         ),
       );
+
+      print("response  ");
+      print(response.body);
+
       final responseData = json.decode(response.body);
       if (responseData["error"] != null) {
         throw HttpException(
@@ -48,7 +56,7 @@ class Auth with ChangeNotifier {
       }
 
       _token = responseData["idToken"];
-      _userId = responseData["userId"];
+      _userId = responseData["localId"];
       _expiryDate = DateTime.now().add(
         Duration(
           seconds: int.parse(responseData["expiresIn"]),

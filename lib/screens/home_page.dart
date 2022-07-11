@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/products_provider.dart';
@@ -104,7 +105,10 @@ class HomePageState extends State<HomePage> {
       ),
       drawer: const MyDrawer(),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(
+              child: LoadingAnimationWidget.staggeredDotsWave(
+                  color: Colors.black, size: 40),
+            )
           : ProductsGrid(showFavs: _showOnlyFavorites),
     );
   }
