@@ -20,7 +20,7 @@ class OrderItem with ChangeNotifier {
 
 class Orders with ChangeNotifier {
   List<OrderItem> _orders = [];
-  final String authToken; 
+  final String authToken;
   final String userId;
 
   Orders(this.authToken, this._orders, this.userId);
@@ -36,11 +36,11 @@ class Orders with ChangeNotifier {
     final response = await http.get(url);
     final List<OrderItem> loadedOrders = [];
 
-    final extracedData = json.decode(response.body) as Map<String, dynamic>;
+    final extracedData = json.decode(response.body);
 
-    // if (extracedData == null) {
-    //   return;
-    // }
+    if (extracedData == null) {
+      return;
+    }
 
     print("orders ->>>>>>>>>>>>>>  ${response.body} ");
 

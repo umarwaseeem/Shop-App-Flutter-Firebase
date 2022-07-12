@@ -7,6 +7,7 @@ import 'package:shop_app/screens/cart_screen.dart';
 import 'package:shop_app/screens/product_detail.dart';
 import 'package:shop_app/screens/userproducts_screen.dart';
 
+import 'helpers/custom_route.dart';
 import 'providers/auth.dart';
 import 'screens/auth_screen.dart';
 import 'screens/edit_product_screen.dart';
@@ -80,6 +81,10 @@ class MyApp extends StatelessWidget {
       colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.orange)
           .copyWith(secondary: Colors.red),
       fontFamily: "Lato",
+      pageTransitionsTheme: PageTransitionsTheme(builders: {
+        TargetPlatform.android: CustomPageTransitionBuilder(),
+        TargetPlatform.iOS: CustomPageTransitionBuilder(),
+      }),
     );
   }
 }

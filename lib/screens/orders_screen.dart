@@ -40,9 +40,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 builder: (context, ordersData, child) {
                   return ListView.builder(
                     itemCount: ordersData.orders.length,
-                    itemBuilder: (context, index) => AnOrderItem(
-                      order: ordersData.orders[index],
-                    ),
+                    itemBuilder: (context, index) {
+                      return AnOrderItem(
+                        order: ordersData.orders[index],
+                      );
+                    },
                   );
                 },
               );
