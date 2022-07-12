@@ -3,15 +3,16 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart.dart';
 import 'package:shop_app/providers/orders.dart';
 import 'package:shop_app/providers/products_provider.dart';
-import 'package:shop_app/screens/auth_screen.dart';
 import 'package:shop_app/screens/cart_screen.dart';
 import 'package:shop_app/screens/product_detail.dart';
 import 'package:shop_app/screens/userproducts_screen.dart';
 
 import 'providers/auth.dart';
+import 'screens/auth_screen.dart';
 import 'screens/edit_product_screen.dart';
 import 'screens/home_page.dart';
 import 'screens/orders_screen.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -49,7 +50,16 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Your One Stop Food Place',
             theme: themeForApp(),
-            home: authData.isAuth ? const HomePage() : const AuthScreen(),
+            home: authData.isAuth
+                ? const HomePage()
+                : FutureBuilder(
+                    future: authData.tryAutoLogin(),
+                    builder: (context, authResultSnapshot) =>
+                        authResultSnapshot.connectionState ==
+                                ConnectionState.waiting
+                            ? const SplashScreen()
+                            : const AuthScreen(),
+                  ),
             routes: {
               HomePage.routeName: (context) => const HomePage(),
               ProductDetail.routeName: (context) => const ProductDetail(),
