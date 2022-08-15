@@ -3,6 +3,10 @@
 
 This is a basic shop/grocery/items application with Rest API features , User Authentication where FireBase is used as a backend. 
 
+## Authors
+
+- [@Muhammad Umar Waseem](https://www.github.com/umar-waseem)
+
 
 ## Screenshots
 
@@ -18,9 +22,7 @@ This is a basic shop/grocery/items application with Rest API features , User Aut
 
 
 
-## Authors
 
-- [@Muhammad Umar Waseem](https://www.github.com/umar-waseem)
 
 
 ## Environment Variables
